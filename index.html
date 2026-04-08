@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISAK Concept — Artisan Premium à Lyon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black:   #0e0d0c;
+    --dark:    #1a1917;
+    --mid:     #3a3632;
+    --warm:    #7c6f5e;
+    --sand:    #c8b89a;
+    --linen:   #ede8e0;
+    --white:   #f8f5f0;
+    --accent:  #9b7f5c;
+    --serif:   'Cormorant Garamond', Georgia, serif;
+    --sans:    'Inter', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--white);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ─── NAV ─────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.6rem 5vw;
+    transition: background .4s, padding .4s, backdrop-filter .4s;
+  }
+  nav.scrolled {
+    background: rgba(14,13,12,.88);
+    backdrop-filter: blur(14px);
+    padding: 1rem 5vw;
+  }
+  .logo {
+    font-family: var(--serif);
+    font-size: 1.55rem;
+    font-weight: 500;
+    letter-spacing: .18em;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+  .logo span { color: var(--sand); }
+  .nav-links {
+    display: flex; gap: 2.6rem; list-style: none;
+  }
+  .nav-links a {
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: rgba(248,245,240,.75);
+    text-decoration: none;
+    transition: color .25s;
+  }
+  .nav-links a:hover { color: var(--sand); }
+  .nav-cta {
+    font-size: .72rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--white) !important;
+    border: 1px solid rgba(200,184,154,.5);
+    padding: .55rem 1.4rem;
+    border-radius: 1px;
+    transition: background .25s, border-color .25s !important;
+  }
+  .nav-cta:hover { background: var(--accent); border-color: var(--accent) !important; color: var(--white) !important; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { display: block; width: 24px; height: 1px; background: var(--white); transition: .3s; }
+
+  /* ─── HERO ────────────────────────────────────────────── */
+  #hero {
+    position: relative;
+    height: 100vh; min-height: 640px;
+    display: flex; align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1800&q=80');
+    background-size: cover;
+    background-position: center 30%;
+    transform: scale(1.04);
+    transition: transform 8s ease-out;
+  }
+  #hero.loaded .hero-bg { transform: scale(1); }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(14,13,12,.82) 0%, rgba(14,13,12,.35) 55%, transparent 100%);
+  }
+  .hero-content {
+    position: relative;
+    padding: 0 5vw 7vh;
+    max-width: 780px;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 1.4rem;
+    opacity: 0;
+    transform: translateY(12px);
+    animation: fadeUp .8s .3s forwards;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 1.8rem;
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp .9s .55s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--sand); }
+  .hero-sub {
+    font-size: .9rem;
+    font-weight: 300;
+    letter-spacing: .04em;
+    color: rgba(248,245,240,.7);
+    line-height: 1.7;
+    max-width: 480px;
+    margin-bottom: 2.8rem;
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fadeUp .9s .8s forwards;
+  }
+  .btn-primary {
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: var(--accent);
+    padding: 1rem 2.4rem;
+    text-decoration: none;
+    border-radius: 1px;
+    transition: background .25s, transform .2s;
+    opacity: 0;
+    animation: fadeUp .9s 1.05s forwards;
+  }
+  .btn-primary:hover { background: #8a6e4d; transform: translateY(-1px); }
+  .hero-scroll {
+    position: absolute; bottom: 2.4rem; right: 5vw;
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    color: rgba(248,245,240,.45);
+    font-size: .65rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    animation: fadeIn 1.2s 1.4s both;
+  }
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px; height: 48px;
+    background: rgba(200,184,154,.4);
+    animation: lineGrow 1.2s 1.6s both;
+  }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes lineGrow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+  /* ─── SHARED ──────────────────────────────────────────── */
+  section { padding: 8rem 5vw; }
+  .section-tag {
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.18;
+    color: var(--dark);
+    margin-bottom: 1.6rem;
+  }
+  .section-title em { font-style: italic; color: var(--accent); }
+  .section-line {
+    width: 44px; height: 1px;
+    background: var(--accent);
+    margin-bottom: 2.4rem;
+  }
+  .btn-outline {
+    display: inline-block;
+    font-size: .73rem;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--dark);
+    border: 1px solid var(--dark);
+    padding: .9rem 2.2rem;
+    text-decoration: none;
+    border-radius: 1px;
+    transition: background .25s, color .25s, border-color .25s;
+  }
+  .btn-outline:hover { background: var(--dark); color: var(--white); }
+  .btn-outline.light {
+    color: var(--white);
+    border-color: rgba(248,245,240,.5);
+  }
+  .btn-outline.light:hover { background: var(--white); color: var(--dark); border-color: var(--white); }
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .75s, transform .75s;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── ABOUT ───────────────────────────────────────────── */
+  #about {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+    padding: 8rem 5vw;
+  }
+  .about-media {
+    position: relative;
+  }
+  .about-img-main {
+    width: 100%; aspect-ratio: 4/5;
+    object-fit: cover;
+    display: block;
+    filter: brightness(.96) contrast(1.04);
+  }
+  .about-img-accent {
+    position: absolute;
+    bottom: -2.5rem; right: -2.5rem;
+    width: 46%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border: 5px solid var(--white);
+    filter: brightness(.94) contrast(1.05) sepia(.08);
+  }
+  .about-badge {
+    position: absolute;
+    top: -1.5rem; left: -1.5rem;
+    width: 90px; height: 90px;
+    background: var(--dark);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: .1rem;
+  }
+  .about-badge strong {
+    font-family: var(--serif);
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--sand);
+    line-height: 1;
+  }
+  .about-badge span {
+    font-size: .6rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: rgba(200,184,154,.7);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .about-text p {
+    font-size: .93rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: var(--mid);
+    margin-bottom: 1.4rem;
+  }
+  .about-text p strong { font-weight: 500; color: var(--dark); }
+  .about-stats {
+    display: grid; grid-template-columns: repeat(3,1fr);
+    gap: 1.5rem;
+    margin: 2.4rem 0;
+    padding: 2rem 0;
+    border-top: 1px solid var(--linen);
+    border-bottom: 1px solid var(--linen);
+  }
+  .stat-num {
+    font-family: var(--serif);
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: var(--dark);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-top: .4rem;
+    display: block;
+  }
+
+  /* ─── SERVICES ────────────────────────────────────────── */
+  #services {
+    background: var(--dark);
+    padding: 8rem 5vw;
+  }
+  #services .section-title { color: var(--white); }
+  #services .section-tag { color: var(--sand); }
+  #services .section-line { background: var(--sand); }
+  .services-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 5rem;
+  }
+  .services-intro {
+    font-size: .9rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(200,184,154,.75);
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5px;
+    background: rgba(255,255,255,.06);
+  }
+  .service-card {
+    background: #1a1917;
+    padding: 2.8rem 2rem;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: background .3s;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .4s;
+  }
+  .service-card:hover { background: #201e1b; }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon {
+    width: 40px; height: 40px;
+    margin-bottom: 2rem;
+    opacity: .65;
+    transition: opacity .3s;
+  }
+  .service-card:hover .service-icon { opacity: 1; }
+  .service-icon svg { width: 100%; height: 100%; }
+  .service-name {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 1rem;
+    letter-spacing: .02em;
+  }
+  .service-desc {
+    font-size: .82rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: rgba(200,184,154,.6);
+  }
+  .service-num {
+    position: absolute; bottom: 1.4rem; right: 1.6rem;
+    font-family: var(--serif);
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: rgba(255,255,255,.04);
+    line-height: 1;
+    user-select: none;
+  }
+
+  /* ─── RÉALISATIONS ────────────────────────────────────── */
+  #realisations { background: var(--linen); }
+  .realisations-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 3.5rem;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 10px;
+  }
+  .gallery-item {
+    overflow: hidden;
+    position: relative;
+  }
+  .gallery-item:nth-child(1) { grid-column: 1/6; grid-row: 1/3; }
+  .gallery-item:nth-child(2) { grid-column: 6/9; grid-row: 1/2; }
+  .gallery-item:nth-child(3) { grid-column: 9/13; grid-row: 1/2; }
+  .gallery-item:nth-child(4) { grid-column: 6/10; grid-row: 2/3; }
+  .gallery-item:nth-child(5) { grid-column: 10/13; grid-row: 2/3; }
+  .gallery-item img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .7s cubic-bezier(.25,.46,.45,.94), filter .5s;
+    filter: brightness(.96) saturate(.9);
+    min-height: 220px;
+  }
+  .gallery-item:hover img { transform: scale(1.06); filter: brightness(1) saturate(1); }
+  .gallery-overlay {
+    position: absolute; inset: 0;
+    background: rgba(14,13,12,.0);
+    display: flex; align-items: flex-end;
+    padding: 1.6rem;
+    transition: background .4s;
+  }
+  .gallery-item:hover .gallery-overlay { background: rgba(14,13,12,.45); }
+  .gallery-label {
+    font-size: .7rem;
+    font-weight: 500;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--white);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity .35s, transform .35s;
+  }
+  .gallery-item:hover .gallery-label { opacity: 1; transform: translateY(0); }
+
+  /* ─── VALEURS ─────────────────────────────────────────── */
+  #valeurs {
+    background: var(--white);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .valeurs-visual {
+    position: relative;
+    aspect-ratio: 3/4;
+  }
+  .valeurs-visual img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(.95) contrast(1.04);
+  }
+  .valeurs-quote {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: var(--dark);
+    padding: 2rem 2rem 2rem;
+    margin: 0;
+  }
+  .valeurs-quote p {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--sand);
+    line-height: 1.6;
+  }
+  .valeurs-list {
+    display: flex; flex-direction: column; gap: .5rem;
+    margin-top: 1rem;
+  }
+  .valeur-item {
+    display: flex; gap: 1.8rem; align-items: flex-start;
+    padding: 1.8rem 0;
+    border-bottom: 1px solid var(--linen);
+  }
+  .valeur-item:first-child { border-top: 1px solid var(--linen); }
+  .valeur-num {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--accent);
+    flex-shrink: 0;
+    margin-top: .1rem;
+    min-width: 28px;
+  }
+  .valeur-title {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--dark);
+    margin-bottom: .4rem;
+  }
+  .valeur-desc {
+    font-size: .83rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: var(--warm);
+  }
+
+  /* ─── PROCESS ─────────────────────────────────────────── */
+  #process { background: var(--dark); }
+  #process .section-title { color: var(--white); }
+  #process .section-tag { color: var(--sand); }
+  #process .section-line { background: var(--sand); }
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 0;
+    margin-top: 4rem;
+    position: relative;
+  }
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px; left: calc(12.5% + 0px); right: calc(12.5%);
+    height: 1px;
+    background: rgba(200,184,154,.2);
+    z-index: 0;
+  }
+  .process-step {
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+  .step-dot {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: #201e1b;
+    border: 1px solid rgba(200,184,154,.25);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 2rem;
+    transition: background .3s, border-color .3s;
+  }
+  .process-step:hover .step-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .step-dot svg { width: 22px; height: 22px; }
+  .step-num {
+    font-size: .65rem;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: .6rem;
+    display: block;
+  }
+  .step-title {
+    font-family: var(--serif);
+    font-size: 1.25rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: .8rem;
+  }
+  .step-desc {
+    font-size: .82rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: rgba(200,184,154,.55);
+  }
+
+  /* ─── AVIS ────────────────────────────────────────────── */
+  #avis { background: var(--linen); }
+  .avis-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3.5rem;
+  }
+  .avis-card {
+    background: var(--white);
+    padding: 2.4rem;
+    position: relative;
+  }
+  .avis-stars {
+    display: flex; gap: .25rem;
+    margin-bottom: 1.4rem;
+  }
+  .avis-stars svg {
+    width: 14px; height: 14px;
+    fill: var(--accent);
+  }
+  .avis-text {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--mid);
+    margin-bottom: 1.8rem;
+  }
+  .avis-author { display: flex; align-items: center; gap: 1rem; }
+  .avis-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    filter: grayscale(20%);
+  }
+  .avis-name {
+    font-size: .82rem;
+    font-weight: 500;
+    color: var(--dark);
+    letter-spacing: .04em;
+  }
+  .avis-loc {
+    font-size: .72rem;
+    font-weight: 300;
+    color: var(--warm);
+    margin-top: .15rem;
+  }
+  .avis-quote-mark {
+    position: absolute;
+    top: 1.8rem; right: 2rem;
+    font-family: var(--serif);
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--linen);
+    line-height: 1;
+    user-select: none;
+  }
+
+  /* ─── CTA FINAL ───────────────────────────────────────── */
+  #cta-final {
+    position: relative;
+    overflow: hidden;
+    padding: 10rem 5vw;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .cta-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    filter: brightness(.32) saturate(.7);
+  }
+  #cta-final .section-tag { position: relative; }
+  #cta-final .section-title { position: relative; color: var(--white); max-width: 680px; text-align: center; }
+  #cta-final .section-line { position: relative; margin: 0 auto 2rem; }
+  .cta-sub {
+    position: relative;
+    font-size: .9rem;
+    font-weight: 300;
+    line-height: 1.85;
+    color: rgba(200,184,154,.8);
+    max-width: 480px;
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+  .cta-actions { position: relative; display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+  .cta-phone {
+    display: flex; align-items: center; gap: .7rem;
+    font-size: .8rem;
+    font-weight: 400;
+    letter-spacing: .1em;
+    color: rgba(248,245,240,.7);
+    text-decoration: none;
+    transition: color .25s;
+    position: relative;
+    margin-top: 2.5rem;
+  }
+  .cta-phone svg { width: 16px; height: 16px; opacity: .7; }
+  .cta-phone:hover { color: var(--sand); }
+
+  /* ─── FOOTER ──────────────────────────────────────────── */
+  footer {
+    background: var(--black);
+    padding: 5rem 5vw 2.5rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid rgba(200,184,154,.12);
+  }
+  .footer-brand .logo { display: block; margin-bottom: 1.2rem; }
+  .footer-tagline {
+    font-size: .82rem;
+    font-weight: 300;
+    line-height: 1.75;
+    color: rgba(200,184,154,.5);
+    max-width: 260px;
+  }
+  .footer-heading {
+    font-size: .68rem;
+    font-weight: 500;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: rgba(200,184,154,.55);
+    margin-bottom: 1.4rem;
+  }
+  .footer-links { list-style: none; display: flex; flex-direction: column; gap: .75rem; }
+  .footer-links a {
+    font-size: .82rem;
+    font-weight: 300;
+    color: rgba(200,184,154,.55);
+    text-decoration: none;
+    transition: color .25s;
+  }
+  .footer-links a:hover { color: var(--sand); }
+  .footer-contact p {
+    font-size: .82rem;
+    font-weight: 300;
+    color: rgba(200,184,154,.55);
+    line-height: 1.9;
+    display: flex; align-items: flex-start; gap: .6rem;
+  }
+  .footer-contact svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 3px; opacity: .6; }
+  .footer-contact a { color: rgba(200,184,154,.55); text-decoration: none; transition: color .25s; }
+  .footer-contact a:hover { color: var(--sand); }
+  .footer-bottom {
+    padding-top: 2rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-copy {
+    font-size: .72rem;
+    color: rgba(200,184,154,.3);
+    font-weight: 300;
+    letter-spacing: .04em;
+  }
+  .footer-legal {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .footer-legal a {
+    font-size: .72rem;
+    color: rgba(200,184,154,.3);
+    text-decoration: none;
+    font-weight: 300;
+    letter-spacing: .04em;
+    transition: color .25s;
+  }
+  .footer-legal a:hover { color: var(--sand); }
+
+  /* ─── MOBILE ──────────────────────────────────────────── */
+  @media (max-width: 1100px) {
+    .services-grid { grid-template-columns: repeat(2,1fr); }
+    .process-steps { grid-template-columns: repeat(2,1fr); gap: 3rem; }
+    .process-steps::before { display: none; }
+    .gallery-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .gallery-item:nth-child(n) { grid-column: auto; grid-row: auto; }
+    .gallery-item img { min-height: 280px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 860px) {
+    #about { grid-template-columns: 1fr; }
+    .about-img-accent { width: 38%; }
+    #valeurs { grid-template-columns: 1fr; }
+    .valeurs-visual { display: none; }
+    .avis-grid { grid-template-columns: 1fr; }
+    .services-header { grid-template-columns: 1fr; gap: 1.5rem; }
+    .realisations-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  }
+  @media (max-width: 680px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .services-grid { grid-template-columns: 1fr; }
+    .process-steps { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    section { padding: 5rem 5vw; }
+    #about { padding: 5rem 5vw; }
+    #valeurs { padding: 5rem 5vw; }
+    .cta-actions { flex-direction: column; align-items: center; }
+    .about-badge { width: 70px; height: 70px; }
+    .about-badge strong { font-size: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="logo">ISAK <span>Concept</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#realisations">Réalisations</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact" class="nav-cta">Devis gratuit</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">Lyon &amp; Alentours — Artisan Premium</span>
+    <h1 class="hero-title">L'exigence du détail pour vos<br><em>projets d'exception</em></h1>
+    <p class="hero-sub">Isolation, plâtrerie, peinture et rénovation intérieure haut de gamme. Chaque chantier est une œuvre soignée, de l'esquisse à la livraison.</p>
+    <a href="#contact" class="btn-primary">Demander un devis</a>
+  </div>
+  <div class="hero-scroll">Découvrir</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-media fade-in">
+    <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=900&q=80" alt="Rénovation haut de gamme" class="about-img-main">
+    <img src="https://images.unsplash.com/photo-1604147706283-d7119b5b822c?w=600&q=80" alt="Finitions premium" class="about-img-accent">
+    <div class="about-badge">
+      <strong>12</strong>
+      <span>Ans<br>d'expertise</span>
+    </div>
+  </div>
+  <div class="about-text fade-in">
+    <span class="section-tag">Notre savoir-faire</span>
+    <h2 class="section-title">Un artisan<br>d'une autre <em>exigence</em></h2>
+    <div class="section-line"></div>
+    <p>ISAK Concept n'est pas une entreprise artisanale ordinaire. Nous intervenons sur des projets qui demandent <strong>une précision, une sensibilité et une maîtrise technique</strong> que les équipes standards ne peuvent pas offrir.</p>
+    <p>Chaque espace que nous traitons devient le reflet de la vision de son propriétaire. Notre équipe pilote chaque chantier comme un architecte dirige un projet : avec méthode, attention et passion du détail.</p>
+    <p>Du premier rendez-vous à la livraison finale, vous bénéficiez d'un accompagnement personnalisé et d'une <strong>transparence totale</strong> sur l'avancement des travaux.</p>
+    <div class="about-stats">
+      <div>
+        <span class="stat-num">+200</span>
+        <span class="stat-label">Projets livrés</span>
+      </div>
+      <div>
+        <span class="stat-num">100%</span>
+        <span class="stat-label">Sur-mesure</span>
+      </div>
+      <div>
+        <span class="stat-num">4.9★</span>
+        <span class="stat-label">Satisfaction</span>
+      </div>
+    </div>
+    <a href="#contact" class="btn-outline">Discutons de votre projet</a>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header">
+    <div>
+      <span class="section-tag">Ce que nous faisons</span>
+      <h2 class="section-title" style="color:var(--white)">Des prestations<br><em style="color:var(--sand)">d'exception</em></h2>
+      <div class="section-line" style="background:var(--sand)"></div>
+    </div>
+    <p class="services-intro">Chaque corps de métier est maîtrisé en interne, de l'isolation thermique aux finitions décoratives les plus exigeantes. Une seule entreprise, une cohérence totale.</p>
+  </div>
+  <div class="services-grid">
+
+    <div class="service-card fade-in">
+      <div class="service-icon">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#c8b89a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="18" width="28" height="14" rx="1"/>
+          <path d="M4 18 L20 6 L36 18"/>
+          <path d="M14 32V22h12v10"/>
+          <path d="M10 18v-4M30 18v-4"/>
+        </svg>
+      </div>
+      <h3 class="service-name">Isolation</h3>
+      <p class="service-desc">Isolation thermique et acoustique par l'intérieur ou l'extérieur. Solutions sur-mesure pour un confort optimal et des économies d'énergie durables.</p>
+      <span class="service-num">01</span>
+    </div>
+
+    <div class="service-card fade-in" style="transition-delay:.1s">
+      <div class="service-icon">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#c8b89a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M8 34 L8 12 Q8 8 12 8 L28 8 Q32 8 32 12 L32 34"/>
+          <path d="M4 34h32"/>
+          <path d="M14 8V6M26 8V6"/>
+          <path d="M8 20h24M8 26h24"/>
+        </svg>
+      </div>
+      <h3 class="service-name">Plâtrerie</h3>
+      <p class="service-desc">Cloisons, doublages, plafonds suspendus et enduits de finition. Travaux de plâtrerie traditionnelle et sèche avec une précision au millimètre.</p>
+      <span class="service-num">02</span>
+    </div>
+
+    <div class="service-card fade-in" style="transition-delay:.2s">
+      <div class="service-icon">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#c8b89a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 30 Q10 24 14 18 Q18 12 20 8"/>
+          <path d="M20 8 Q24 4 28 8 Q32 12 28 18 Q24 24 28 30"/>
+          <path d="M9 34 Q14 30 20 30 Q26 30 31 34"/>
+          <circle cx="20" cy="8" r="2"/>
+          <path d="M16 20 Q20 16 24 20"/>
+        </svg>
+      </div>
+      <h3 class="service-name">Peinture</h3>
+      <p class="service-desc">Peinture décorative, effets matières, enduits à la chaux. Du camaïeu élégant aux teintes architecturales les plus recherchées, avec des préparations irréprochables.</p>
+      <span class="service-num">03</span>
+    </div>
+
+    <div class="service-card fade-in" style="transition-delay:.3s">
+      <div class="service-icon">
+        <svg viewBox="0 0 40 40" fill="none" stroke="#c8b89a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="6" y="6" width="28" height="28" rx="1"/>
+          <path d="M6 16h28M16 6v28"/>
+          <path d="M22 22h8v8h-8z"/>
+          <path d="M10 10h2v2h-2z"/>
+        </svg>
+      </div>
+      <h3 class="service-name">Rénovation</h3>
+      <p class="service-desc">Rénovation complète de vos espaces intérieurs. Coordination de tous les corps de métier, gestion de projet de A à Z pour un résultat digne des plus belles réalisations.</p>
+      <span class="service-num">04</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- RÉALISATIONS -->
+<section id="realisations">
+  <div class="realisations-header">
+    <div>
+      <span class="section-tag">Portfolio</span>
+      <h2 class="section-title">Nos dernières <em>réalisations</em></h2>
+      <div class="section-line"></div>
+    </div>
+    <a href="#contact" class="btn-outline">Voir tous les projets</a>
+  </div>
+
+  <div class="gallery-grid">
+    <div class="gallery-item fade-in">
+      <img src="https://images.unsplash.com/photo-1631679706909-1844bbd07221?w=900&q=80" alt="Séjour haut de gamme avec poutres apparentes">
+      <div class="gallery-overlay"><span class="gallery-label">Salon — Poutres apparentes</span></div>
+    </div>
+    <div class="gallery-item fade-in" style="transition-delay:.1s">
+      <img src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=700&q=80" alt="Salle de bain design">
+      <div class="gallery-overlay"><span class="gallery-label">SDB — Faïence & enduit</span></div>
+    </div>
+    <div class="gallery-item fade-in" style="transition-delay:.15s">
+      <img src="https://images.unsplash.com/photo-1589834390005-5d4fb9bf3d32?w=700&q=80" alt="Mur texturé finition premium">
+      <div class="gallery-overlay"><span class="gallery-label">Mur — Enduit à la chaux</span></div>
+    </div>
+    <div class="gallery-item fade-in" style="transition-delay:.2s">
+      <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=700&q=80" alt="Cuisine ouverte rénovée">
+      <div class="gallery-overlay"><span class="gallery-label">Cuisine — Rénovation complète</span></div>
+    </div>
+    <div class="gallery-item fade-in" style="transition-delay:.25s">
+      <img src="https://images.unsplash.com/photo-1600210491892-03d54079b6ac?w=700&q=80" alt="Chambre épurée finitions haut de gamme">
+      <div class="gallery-overlay"><span class="gallery-label">Chambre — Finitions premium</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- VALEURS -->
+<section id="valeurs">
+  <div class="valeurs-visual fade-in">
+    <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=900&q=80" alt="Artisan au travail">
+    <blockquote class="valeurs-quote">
+      <p>"Le luxe, c'est quand la qualité devient invisible parce qu'elle est partout."</p>
+    </blockquote>
+  </div>
+  <div class="fade-in" style="transition-delay:.15s">
+    <span class="section-tag">Notre engagement</span>
+    <h2 class="section-title">Ce qui nous<br><em>distingue</em></h2>
+    <div class="section-line"></div>
+    <div class="valeurs-list">
+      <div class="valeur-item">
+        <span class="valeur-num">01</span>
+        <div>
+          <h3 class="valeur-title">Travail sur-mesure</h3>
+          <p class="valeur-desc">Chaque projet est unique. Nous n'utilisons pas de solutions standardisées : chaque chantier est étudié, conçu et réalisé spécifiquement pour vous.</p>
+        </div>
+      </div>
+      <div class="valeur-item">
+        <span class="valeur-num">02</span>
+        <div>
+          <h3 class="valeur-title">Finitions haut de gamme</h3>
+          <p class="valeur-desc">Nous n'acceptons pas l'approximation. La qualité des matériaux, la précision des joints, l'homogénéité des surfaces : tout est contrôlé.</p>
+        </div>
+      </div>
+      <div class="valeur-item">
+        <span class="valeur-num">03</span>
+        <div>
+          <h3 class="valeur-title">Accompagnement total</h3>
+          <p class="valeur-desc">De la première visite à la remise des clés, vous avez un interlocuteur unique. Pas de sous-traitance invisible, pas de surprise en facturation.</p>
+        </div>
+      </div>
+      <div class="valeur-item">
+        <span class="valeur-num">04</span>
+        <div>
+          <h3 class="valeur-title">Précision artisanale</h3>
+          <p class="valeur-desc">Nos compagnons sont formés aux techniques traditionnelles et aux savoir-faire d'excellence. La rapidité ne prime jamais sur le soin du geste.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div style="max-width:520px">
+    <span class="section-tag">Comment on travaille</span>
+    <h2 class="section-title" style="color:var(--white)">Un process <em style="color:var(--sand)">transparent</em><br>de A à Z</h2>
+    <div class="section-line" style="background:var(--sand)"></div>
+  </div>
+  <div class="process-steps">
+    <div class="process-step fade-in">
+      <div class="step-dot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c8b89a" stroke-width="1.4" stroke-linecap="round">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 10.6a19.79 19.79 0 01-3.07-8.73A2 2 0 012.85 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0121.28 14l.64 2.92z"/>
+        </svg>
+      </div>
+      <span class="step-num">Étape 01</span>
+      <h3 class="step-title">Prise de contact</h3>
+      <p class="step-desc">Vous nous contactez par téléphone ou via le formulaire. Nous fixons un rendez-vous sur site sous 48h pour écouter votre projet.</p>
+    </div>
+    <div class="process-step fade-in" style="transition-delay:.1s">
+      <div class="step-dot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c8b89a" stroke-width="1.4" stroke-linecap="round">
+          <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+        </svg>
+      </div>
+      <span class="step-num">Étape 02</span>
+      <h3 class="step-title">Étude & devis</h3>
+      <p class="step-desc">Analyse technique, recommandations matériaux, proposition esthétique. Un devis détaillé et transparent vous est remis sous 5 jours.</p>
+    </div>
+    <div class="process-step fade-in" style="transition-delay:.2s">
+      <div class="step-dot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c8b89a" stroke-width="1.4" stroke-linecap="round">
+          <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+        </svg>
+      </div>
+      <span class="step-num">Étape 03</span>
+      <h3 class="step-title">Réalisation</h3>
+      <p class="step-desc">Notre équipe intervient selon le planning convenu. Chantier propre, respect des délais, points d'avancement réguliers avec vous.</p>
+    </div>
+    <div class="process-step fade-in" style="transition-delay:.3s">
+      <div class="step-dot">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c8b89a" stroke-width="1.4" stroke-linecap="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <span class="step-num">Étape 04</span>
+      <h3 class="step-title">Livraison</h3>
+      <p class="step-desc">Visite de réception avec vous, levée des réserves si nécessaire. Votre satisfaction est signée. Garantie décennale sur tous nos travaux.</p>
+    </div>
+  </div>
+</section>
+
+<!-- AVIS -->
+<section id="avis">
+  <span class="section-tag">Ce qu'ils en disent</span>
+  <h2 class="section-title">La satisfaction<br>de nos <em>clients</em></h2>
+  <div class="section-line"></div>
+  <div class="avis-grid">
+
+    <div class="avis-card fade-in">
+      <span class="avis-quote-mark">"</span>
+      <div class="avis-stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <p class="avis-text">« Nous avons confié à ISAK Concept la rénovation complète de notre appartement dans le 6ème. Le résultat dépasse nos attentes. Chaque détail a été soigné, et l'équipe a su concrétiser notre vision avec une précision remarquable. »</p>
+      <div class="avis-author">
+        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&q=80" alt="Sophie M." class="avis-avatar">
+        <div>
+          <div class="avis-name">Sophie M.</div>
+          <div class="avis-loc">Lyon 6ème — Rénovation appartement</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="avis-card fade-in" style="transition-delay:.1s">
+      <span class="avis-quote-mark">"</span>
+      <div class="avis-stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <p class="avis-text">« Professionnalisme exemplaire. Délais tenus, devis respecté à l'euro près, et une qualité de finition que je n'avais jamais vue chez aucun autre artisan. Je recommande ISAK Concept sans hésiter pour tout projet exigeant. »</p>
+      <div class="avis-author">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80" alt="Thomas R." class="avis-avatar">
+        <div>
+          <div class="avis-name">Thomas R.</div>
+          <div class="avis-loc">Écully — Extension & rénovation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="avis-card fade-in" style="transition-delay:.2s">
+      <span class="avis-quote-mark">"</span>
+      <div class="avis-stars">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <p class="avis-text">« Nous avons fait appel à ISAK pour l'isolation et la peinture de notre maison à Villeurbanne. Travail irréprochable, conseils précieux sur les matériaux, et une équipe vraiment à l'écoute. On ne cherchera plus d'autre artisan. »</p>
+      <div class="avis-author">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80" alt="Camille D." class="avis-avatar">
+        <div>
+          <div class="avis-name">Camille D.</div>
+          <div class="avis-loc">Villeurbanne — Isolation & peinture</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="cta-final" id="contact">
+  <div class="cta-bg"></div>
+  <span class="section-tag">Passez à l'action</span>
+  <div class="section-line"></div>
+  <h2 class="section-title">Votre projet mérite<br><em>le meilleur artisan</em></h2>
+  <p class="cta-sub">Un rendez-vous, une écoute, une proposition sur-mesure. Nous intervenons sur Lyon et ses alentours. Devis gratuit et sans engagement.</p>
+  <div class="cta-actions">
+    <a href="mailto:contact@isakconcept.fr" class="btn-primary">Demander un devis gratuit</a>
+    <a href="tel:+33600000000" class="btn-outline light">Nous appeler</a>
+  </div>
+  <a href="tel:+33600000000" class="cta-phone">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+      <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 10.6a19.79 19.79 0 01-3.07-8.73A2 2 0 012.85 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0121.28 14l.64 2.92z"/>
+    </svg>
+    +33 (0)6 00 00 00 00 — Disponible du lundi au samedi
+  </a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="logo">ISAK <span>Concept</span></a>
+      <p class="footer-tagline">Artisan premium en isolation, plâtrerie, peinture et rénovation intérieure haut de gamme à Lyon et ses alentours.</p>
+    </div>
+    <div>
+      <p class="footer-heading">Navigation</p>
+      <ul class="footer-links">
+        <li><a href="#about">À propos</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#realisations">Réalisations</a></li>
+        <li><a href="#valeurs">Nos valeurs</a></li>
+        <li><a href="#process">Notre process</a></li>
+        <li><a href="#avis">Témoignages</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-heading">Services</p>
+      <ul class="footer-links">
+        <li><a href="#services">Isolation</a></li>
+        <li><a href="#services">Plâtrerie</a></li>
+        <li><a href="#services">Peinture décorative</a></li>
+        <li><a href="#services">Rénovation intérieure</a></li>
+      </ul>
+    </div>
+    <div class="footer-contact">
+      <p class="footer-heading">Contact</p>
+      <p>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.95 10.6a19.79 19.79 0 01-3.07-8.73A2 2 0 012.85 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L7.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0121.28 14l.64 2.92z"/></svg>
+        <a href="tel:+33600000000">+33 (0)6 00 00 00 00</a>
+      </p>
+      <p>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="mailto:contact@isakconcept.fr">contact@isakconcept.fr</a>
+      </p>
+      <p>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Lyon &amp; alentours (Rhône, Ain, Isère)
+      </p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2025 ISAK Concept — Tous droits réservés</p>
+    <ul class="footer-legal">
+      <li><a href="#">Mentions légales</a></li>
+      <li><a href="#">Politique de confidentialité</a></li>
+      <li><a href="#">CGV</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Hero parallax + loaded class
+  const heroBg = document.querySelector('.hero-bg');
+  const hero = document.getElementById('hero');
+  hero.classList.add('loaded');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight) {
+      heroBg.style.transform = `scale(1) translateY(${y * 0.3}px)`;
+    }
+  }, { passive: true });
+
+  // Intersection observer for fade-in
+  const fadeEls = document.querySelectorAll('.fade-in');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  fadeEls.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
